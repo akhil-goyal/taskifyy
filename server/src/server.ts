@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import * as usersController from "./controllers/users";
+import bodyParser from "body-parser";
 
 const PORT: number = 4001;
 const dbString: string =
@@ -11,9 +13,14 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   res.send("API is working");
 });
+
+app.post("/api/users", usersController.register);
 
 io.on("connection", () => {
   console.log("Socket connected!");
