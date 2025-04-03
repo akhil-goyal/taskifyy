@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import * as usersController from "./controllers/users";
+import * as usersController from "./controllers/users"; // Importing all exports
 import bodyParser from "body-parser";
 
 const PORT: number = 4001;
