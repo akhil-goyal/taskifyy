@@ -2,9 +2,10 @@ import express from "express";
 import mongoose from "mongoose";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import * as usersController from "./controllers/users"; // Importing all exports
+import * as usersController from "./controllers/users";
 import bodyParser from "body-parser";
 import { config } from "./config";
+import authMiddleware from "./middlewares/auth";
 
 const app = express();
 const httpServer = createServer(app);
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 
 app.post("/api/users", usersController.register);
 app.post("/api/users/login", usersController.login);
+app.get("/api/user", authMiddleware, usersController.currentUser);
 
 io.on("connection", () => {
   console.log("Socket connected!");
