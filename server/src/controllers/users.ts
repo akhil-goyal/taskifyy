@@ -27,11 +27,11 @@ export const register: RequestHandler = async (
       password: req.body.password,
     });
     const savedUser = await newUser.save();
-    res.send(normalizeUser(savedUser)); // No explicit return
+    res.send(normalizeUser(savedUser));
   } catch (err) {
     if (err instanceof Error.ValidationError) {
       const messages = Object.values(err.errors).map((err) => err.message);
-      res.status(422).json(messages); // No explicit return
+      res.status(422).json(messages);
     } else {
       next(err);
     }
