@@ -6,11 +6,13 @@ import * as usersController from "./controllers/users";
 import bodyParser from "body-parser";
 import { config } from "./config";
 import authMiddleware from "./middlewares/auth";
+import cors from "cors";
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
