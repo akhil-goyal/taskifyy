@@ -1,5 +1,5 @@
 import express from "express";
-import mongoose, { ConnectOptions } from "mongoose";
+import mongoose from "mongoose";
 import { createServer } from "http";
 import { Server } from "socket.io";
 
