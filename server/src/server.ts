@@ -4,10 +4,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import * as usersController from "./controllers/users"; // Importing all exports
 import bodyParser from "body-parser";
-
-const PORT: number = 4001;
-const dbString: string =
-  "mongodb+srv://akhilgoyalwork:v8NscXcZWxKO2ouh@taskifyy.2auuizl.mongodb.net/?retryWrites=true&w=majority&appName=Taskifyy";
+import { config } from "./config";
 
 const app = express();
 const httpServer = createServer(app);
@@ -21,17 +18,18 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/users", usersController.register);
+app.post("/api/users/login", usersController.login);
 
 io.on("connection", () => {
   console.log("Socket connected!");
 });
 
 mongoose
-  .connect(dbString)
+  .connect(config.DB_URI)
   .then(() => {
     console.log("MongoDB Connected!");
-    httpServer.listen(PORT, () => {
-      console.log(`Server running on PORT: ${PORT}`);
+    httpServer.listen(config.PORT, () => {
+      console.log(`Server running on PORT: ${config.PORT}`);
     });
   })
   .catch((err: Error) => {
