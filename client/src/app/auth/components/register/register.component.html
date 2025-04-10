@@ -4,7 +4,9 @@
   </a>
   <div class="form-container">
     <div class="login-header">Register to Trello</div>
-    <div class="errors"></div>
+    @if (error) {
+    <div class="errors">{{ error }}</div>
+    }
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <input
         formControlName="email"
