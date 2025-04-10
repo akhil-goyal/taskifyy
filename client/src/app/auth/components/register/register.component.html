@@ -5,7 +5,7 @@
   <div class="form-container">
     <div class="login-header">Register to Trello</div>
     <div class="errors"></div>
-    <form>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <input
         formControlName="email"
         type="email"
