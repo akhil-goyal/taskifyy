@@ -11,15 +11,14 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'auth-register',
+  selector: 'auth-login',
   imports: [ReactiveFormsModule, FormsModule, CommonModule, RouterLink],
-  templateUrl: './register.component.html',
+  templateUrl: './login.component.html',
 })
-export class RegisterComponent {
+export class LoginComponent {
   errorMessage: string | null = null;
   form = this.fb.nonNullable.group({
     email: ['', Validators.required],
-    username: ['', Validators.required],
     password: ['', Validators.required],
   });
 
@@ -30,7 +29,7 @@ export class RegisterComponent {
   ) {}
 
   onSubmit(): void {
-    this.authService.register(this.form.getRawValue()).subscribe({
+    this.authService.login(this.form.getRawValue()).subscribe({
       next: (currentUser) => {
         console.log('currentUser:', currentUser);
         this.authService.setToken(currentUser);
@@ -40,7 +39,7 @@ export class RegisterComponent {
       },
       error: (err: HttpErrorResponse) => {
         console.log('err', err.error);
-        this.errorMessage = err.error.join(', ');
+        this.errorMessage = err.error.emailOrPassword;
       },
     });
   }
