@@ -34,7 +34,7 @@ export class RegisterComponent {
       next: (currentUser) => {
         console.log('currentUser:', currentUser);
         this.authService.setToken(currentUser);
-        this.authService.setCurrenUser(currentUser);
+        this.authService.setCurrentUser(currentUser);
         this.errorMessage = null;
         this.router.navigateByUrl('/');
       },

@@ -15,11 +15,11 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe({
       next: (currentUser) => {
-        this.authService.setCurrenUser(currentUser);
+        this.authService.setCurrentUser(currentUser);
       },
       error: (err) => {
         console.log('err', err);
-        this.authService.setCurrenUser(null);
+        this.authService.setCurrentUser(null);
       },
     });
   }
