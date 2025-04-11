@@ -93,6 +93,9 @@ io.use(async (socket: Socket, next) => {
   socket.on(SocketEventsEnum.columnsUpdate, (data) => {
     columnsController.updateColumn(io, socket, data);
   });
+  socket.on(SocketEventsEnum.tasksUpdate, (data) => {
+    tasksController.updateTask(io, socket, data);
+  });
 });
 
 mongoose.connect("mongodb://localhost:27017/eltrello").then(() => {
