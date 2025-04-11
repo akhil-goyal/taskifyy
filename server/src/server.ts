@@ -40,7 +40,7 @@ io.on("connection", () => {
 
 mongoose.connect(DB_URI).then(() => {
   console.log("connected to mongodb");
-  httpServer.listen(4000, () => {
-    console.log(`API is listening on port 4000`);
+  httpServer.listen(4001, () => {
+    console.log(`API is listening on port 4001`);
   });
 });
