@@ -1,11 +1,10 @@
-import { NextFunction, Response, RequestHandler } from "express";
+import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
+import { secret } from "../config";
 import UserModel from "../models/user";
-import { ExpressRequestInterface } from "../types/expressRequest.interface";
-import { config } from "../config";
+import {ExpressRequestInterface} from "../types/expressRequest.interface";
 
-// Explicitly type the middleware as a RequestHandler
-const authMiddleware: RequestHandler = async (
+export default async (
   req: ExpressRequestInterface,
   res: Response,
   next: NextFunction
@@ -14,27 +13,19 @@ const authMiddleware: RequestHandler = async (
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-      res.sendStatus(401); // No explicit return
-      return; // Exit early, typed as void
+      return res.sendStatus(401);
     }
-
     const token = authHeader.split(" ")[1];
-    const data = jwt.verify(token, config.JWT_SECRET) as {
-      id: string;
-      email: string;
-    };
+    const data = jwt.verify(token, secret) as { id: string; email: string };
     const user = await UserModel.findById(data.id);
 
     if (!user) {
-      res.sendStatus(401); // No explicit return
-      return; // Exit early, typed as void
+      return res.sendStatus(401);
     }
 
     req.user = user;
     next();
   } catch (err) {
-    res.sendStatus(401); // No explicit return
+    res.sendStatus(401);
   }
 };
-
-export default authMiddleware;

@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 import { UserDocument } from "../types/user.interface";
 import validator from "validator";
 import bcryptjs from "bcryptjs";
@@ -8,7 +8,7 @@ const userSchema = new Schema<UserDocument>(
     email: {
       type: String,
       required: [true, "Email is required"],
-      validate: [validator.isEmail, "Invalid Email"],
+      validate: [validator.isEmail, "invalid email"],
       createIndexes: { unique: true },
     },
     username: {
@@ -21,7 +21,9 @@ const userSchema = new Schema<UserDocument>(
       select: false,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 userSchema.pre("save", async function (next) {
@@ -39,6 +41,7 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.validatePassword = function (password: string) {
+  console.log("validatePassword", password, this);
   return bcryptjs.compare(password, this.password);
 };
 

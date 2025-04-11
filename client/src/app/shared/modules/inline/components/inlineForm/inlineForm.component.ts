@@ -1,10 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'inline-form',
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './inlineForm.component.html',
 })
 export class InlineFormComponent {

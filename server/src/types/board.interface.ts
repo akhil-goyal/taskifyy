@@ -6,4 +6,5 @@ export interface Board {
   updatedAt: Date;
   userId: Schema.Types.ObjectId;
 }
+
 export interface BoardDocument extends Document, Board {}

@@ -1,23 +1,16 @@
-import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'auth-login',
-  imports: [ReactiveFormsModule, FormsModule, CommonModule, RouterLink],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
   errorMessage: string | null = null;
-  form = this.fb.nonNullable.group({
+  form = this.fb.group({
     email: ['', Validators.required],
     password: ['', Validators.required],
   });
@@ -29,9 +22,9 @@ export class LoginComponent {
   ) {}
 
   onSubmit(): void {
-    this.authService.login(this.form.getRawValue()).subscribe({
+    this.authService.login(this.form.value).subscribe({
       next: (currentUser) => {
-        console.log('currentUser:', currentUser);
+        console.log('currentUser', currentUser);
         this.authService.setToken(currentUser);
         this.authService.setCurrentUser(currentUser);
         this.errorMessage = null;

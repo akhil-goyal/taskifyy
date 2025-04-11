@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 import { BoardDocument } from "../types/board.interface";
 
 const boardSchema = new Schema<BoardDocument>({

@@ -1,13 +1,13 @@
 import express from "express";
-import mongoose from "mongoose";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import mongoose from "mongoose";
 import * as usersController from "./controllers/users";
 import * as boardsController from "./controllers/boards";
 import bodyParser from "body-parser";
-import { config } from "./config";
 import authMiddleware from "./middlewares/auth";
 import cors from "cors";
+import { DB_URI } from "./config";
 
 const app = express();
 const httpServer = createServer(app);
@@ -25,26 +25,22 @@ mongoose.set("toJSON", {
 });
 
 app.get("/", (req, res) => {
-  res.send("API is working");
+  res.send("API is UP");
 });
 
 app.post("/api/users", usersController.register);
 app.post("/api/users/login", usersController.login);
 app.get("/api/user", authMiddleware, usersController.currentUser);
 app.get("/api/boards", authMiddleware, boardsController.getBoards);
+app.post("/api/boards", authMiddleware, boardsController.createBoard);
 
 io.on("connection", () => {
-  console.log("Socket connected!");
+  console.log("connect");
 });
 
-mongoose
-  .connect(config.DB_URI)
-  .then(() => {
-    console.log("MongoDB Connected!");
-    httpServer.listen(config.PORT, () => {
-      console.log(`Server running on PORT: ${config.PORT}`);
-    });
-  })
-  .catch((err: Error) => {
-    console.error(err);
+mongoose.connect(DB_URI).then(() => {
+  console.log("connected to mongodb");
+  httpServer.listen(4000, () => {
+    console.log(`API is listening on port 4000`);
   });
+});

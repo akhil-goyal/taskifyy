@@ -1,13 +1,13 @@
-import { NextFunction, Request, Response, RequestHandler } from "express";
-import UserModel from "./../models/user";
+import { NextFunction, Request, Response } from "express";
+import UserModel from "../models/user";
 import { UserDocument } from "../types/user.interface";
 import { Error } from "mongoose";
 import jwt from "jsonwebtoken";
-import { config } from "./../config";
+import { secret } from "../config";
 import { ExpressRequestInterface } from "../types/expressRequest.interface";
 
 const normalizeUser = (user: UserDocument) => {
-  const token = jwt.sign({ id: user.id, email: user.email }, config.JWT_SECRET);
+  const token = jwt.sign({ id: user.id, email: user.email }, secret);
   return {
     email: user.email,
     username: user.username,
@@ -16,7 +16,7 @@ const normalizeUser = (user: UserDocument) => {
   };
 };
 
-export const register: RequestHandler = async (
+export const register = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -32,14 +32,13 @@ export const register: RequestHandler = async (
   } catch (err) {
     if (err instanceof Error.ValidationError) {
       const messages = Object.values(err.errors).map((err) => err.message);
-      res.status(422).json(messages);
-    } else {
-      next(err);
+      return res.status(422).json(messages);
     }
+    next(err);
   }
 };
 
-export const login: RequestHandler = async (
+export const login = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -48,18 +47,16 @@ export const login: RequestHandler = async (
     const user = await UserModel.findOne({ email: req.body.email }).select(
       "+password"
     );
-    const errors = { emailOrPassword: "Incorrect email/password" };
+    const errors = { emailOrPassword: "Incorrect email or password" };
 
     if (!user) {
-      res.status(422).json(errors);
-      return;
+      return res.status(422).json(errors);
     }
 
     const isSamePassword = await user.validatePassword(req.body.password);
 
     if (!isSamePassword) {
-      res.status(422).json(errors);
-      return;
+      return res.status(422).json(errors);
     }
 
     res.send(normalizeUser(user));
@@ -68,14 +65,9 @@ export const login: RequestHandler = async (
   }
 };
 
-export const currentUser: RequestHandler = (
-  req: ExpressRequestInterface,
-  res: Response,
-  next: NextFunction
-) => {
+export const currentUser = (req: ExpressRequestInterface, res: Response) => {
   if (!req.user) {
-    res.sendStatus(401);
-    return;
+    return res.sendStatus(401);
   }
   res.send(normalizeUser(req.user));
 };
