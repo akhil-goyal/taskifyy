@@ -7,6 +7,7 @@ import * as boardsController from "./controllers/boards";
 import bodyParser from "body-parser";
 import authMiddleware from "./middlewares/auth";
 import cors from "cors";
+import { SocketEventsEnum } from "./types/socketEvents.enum";
 import { DB_URI } from "./config";
 
 const app = express();
@@ -39,8 +40,13 @@ app.get("/api/boards", authMiddleware, boardsController.getBoards);
 app.get("/api/boards/:boardId", authMiddleware, boardsController.getBoard);
 app.post("/api/boards", authMiddleware, boardsController.createBoard);
 
-io.on("connection", () => {
-  console.log("connect");
+io.on("connection", (socket) => {
+  socket.on(SocketEventsEnum.boardsJoin, (data) => {
+    boardsController.joinBoard(io, socket, data);
+  });
+  socket.on(SocketEventsEnum.boardsLeave, (data) => {
+    boardsController.leaveBoard(io, socket, data);
+  });
 });
 
 mongoose.connect(DB_URI).then(() => {
