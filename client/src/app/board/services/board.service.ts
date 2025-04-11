@@ -80,6 +80,11 @@ export class BoardService {
       .filter((column) => column.id !== columnId);
     this.columns$.next(updatedColumns);
   }
-}
 
-// title, description, userId, columnId, boardId
+  deleteTask(taskId: string): void {
+    const updatedTasks = this.tasks$
+      .getValue()
+      .filter((task) => task.id !== taskId);
+    this.tasks$.next(updatedTasks);
+  }
+}
