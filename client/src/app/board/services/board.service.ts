@@ -30,3 +30,5 @@ export class BoardService {
     this.columns$.next(updatedColumns);
   }
 }
+
+// title, description, userId, columnId, boardId
