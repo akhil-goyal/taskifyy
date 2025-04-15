@@ -10,7 +10,7 @@ import {
   takeUntil,
 } from 'rxjs';
 import { TaskInterface } from 'src/app/shared/types/task.interface';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { ColumnInterface } from 'src/app/shared/types/column.interface';
 import { TasksService } from 'src/app/shared/services/tasks.service';
 import { SocketService } from 'src/app/shared/services/socket.service';
@@ -38,7 +38,7 @@ export class TaskModalComponent implements OnDestroy {
     private boardService: BoardService,
     private tasksService: TasksService,
     private socketService: SocketService,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {
     const taskId = this.route.snapshot.paramMap.get('taskId');
     const boardId = this.route.parent?.snapshot.paramMap.get('boardId');
